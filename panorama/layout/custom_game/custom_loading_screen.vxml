@@ -1,0 +1,14 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/custom_loading_screen.vcss" />
+	</styles>
+	<Panel class="OverthrowLoadingRoot">
+		<Panel class="Wrap" >
+			<Image class="Rubick" src="s2r://panorama/images/custom_game/loading_screen/rubick_jpg.vtex" />
+		</Panel>
+		<Panel id="TitlePanel">
+			<Label id="OverthrowTitle" text="#addon_game_name" style="" />
+		</Panel>
+	</Panel>
+</root>

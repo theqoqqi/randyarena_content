@@ -1,0 +1,295 @@
+.Root {
+	width: 100%;
+	height: 100%;
+}
+
+
+
+.HudContainer {
+	width: 100%;
+	height: 100%;
+}
+
+Panel.HudOverlay {
+	horizontal-align: center;
+	vertical-align: bottom;
+
+    height: 145px;
+
+	transform: translateY(202px);
+	transition-property: transform;
+	transition-duration: 1s;
+	transition-delay: 2s;
+	transition-timing-function: ease-in-out;
+
+    visibility: collapse;
+
+	/*background-color: #abcdef11;*/
+}
+Panel.HudOverlay.Layout-1 {
+	visibility: visible;
+}
+Panel.HudOverlay.Layout-2 {
+	visibility: visible;
+}
+Panel.HudOverlay.Layout-3 {
+	visibility: visible;
+}
+Panel.HudOverlay.Layout-4 {
+	visibility: visible;
+}
+Panel.HudOverlay.Layout-5 {
+    visibility: visible;
+}
+Panel.HudOverlay.Layout-6 {
+    visibility: visible;
+}
+
+Panel.HudOverlay.Visible {
+	transform: translateY(0px);
+}
+
+Panel.HudOverlay Panel.HudPanel {
+    height: 145px;
+
+    flow-children: right;
+
+	/*background-color: #abcdef11;*/
+}
+
+Panel.HudOverlay Panel.UsableHudSpace {
+
+    width: 100%;
+    height: 100%;
+
+	vertical-align: bottom;
+
+	margin-left: 132px;
+	margin-right: 133px;
+
+
+	/*background-color: #abcdef11;*/
+}
+
+Panel.AbilitiesOverlay {
+	horizontal-align: center;
+	vertical-align: bottom;
+
+	margin-left: 293px;
+	margin-right: 306px;
+	margin-bottom: 50px;
+
+	min-width: 321px;
+
+	flow-children: right;
+}
+
+
+Panel.TalentPlaceholder {
+	width: 62px;
+	height: 62px;
+	margin-right: 3px;
+	margin-bottom: 28px;
+
+	vertical-align: bottom;
+
+	/*border: 1px solid #ab1234ff;*/
+}
+
+Panel.Abilities {
+
+    height: 129px;
+
+	padding-left: -2px;
+	padding-right: -2px;
+
+	flow-children: right;
+}
+
+Panel.HudOverlay.Layout-1 Panel.Abilities {
+	width: 260px;
+}
+
+Panel.HudOverlay.Layout-2 Panel.Abilities {
+	width: 260px;
+}
+
+Panel.HudOverlay.Layout-3 Panel.Abilities {
+	width: 260px;
+}
+
+Panel.HudOverlay.Layout-4 Panel.Abilities {
+	width: 260px;
+}
+
+Panel.HudOverlay.Layout-5 Panel.Abilities {
+    width: 290px;
+}
+
+Panel.HudOverlay.Layout-6 Panel.Abilities {
+    width: 348px;
+}
+
+
+
+Panel.HudOverlay Panel.HudAddon {
+
+    width: 70px;
+    height: 140px;
+
+	vertical-align: bottom;
+
+	flow-children: down;
+
+	background-image: url("s2r://panorama/images/custom_game/hud_addon_png.vtex");
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	background-size: 100% 100%;
+
+	/*background-color: #abcdef11;*/
+}
+
+Panel.HudOverlay Panel.RightFlare {
+
+    width: 52px;
+    height: 138px;
+
+    vertical-align: bottom;
+
+    background-image: url("s2r://panorama/images/hud/reborn/side_flare_tall_psd.vtex");
+    background-size: 100%;
+
+    transform: scaleX(-1);
+
+	/*background-color: #abcdef11;*/
+}
+
+/* Ability Points Addon */
+
+.AbilityPoints {
+	flow-children: down;
+}
+
+.AbilityPointsCountPanel {
+
+    width: 62px;
+    height: 24px;
+
+    margin: 4px;
+
+	flow-children: right;
+
+	background-color: #00000088;
+	border-left: 1px solid #000000ff;
+	border-top: 1px solid #000000ff;
+	border-right: 1px solid #ffffff08;
+	border-bottom: 1px solid #ffffff08;
+}
+
+.AbilityPointsCountWrapper {
+    width: 38px;
+    height: 32px;
+}
+
+.AbilityPointsCountPanel Label {
+
+	horizontal-align: center;
+	vertical-align: center;
+
+	color: white;
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.AbilityPointsCountPanel .Icon {
+    width: 24px;
+    height: 24px;
+
+	border-radius: 50%;
+
+	background-color: #a06310;
+	background-image: url("s2r://panorama/images/hud/reborn/levelup_plus_fill_psd.vtex");
+	background-repeat: no-repeat;
+	background-position: 4px 4px;
+	background-size: 15px 15px;
+}
+
+.AbilityPoints .ButtonPanel {
+    width: 70px;
+    height: 50px;
+}
+
+.AbilityPoints .ButtonPanel .Button {
+    width: 62px;
+    height: 42px;
+
+    margin: 4px;
+
+	background-color: #44444488;
+
+	border-left: 1px solid #d8a34188;
+	border-top: 1px solid #d8a34188;
+	border-right: 1px solid #6d501a88;
+	border-bottom: 1px solid #6d501a88;
+}
+
+.AbilityPoints .ButtonPanel:hover .Button {
+	background-color: #66666688;
+}
+
+.AbilityPoints .ButtonPanel .Button.Action {
+    visibility: visible;
+
+	transition-property: background-color;
+	transition-duration: 0.1s;
+}
+
+.AbilityPoints .ButtonPanel .Button.Cancel {
+    visibility: collapse;
+}
+
+.AbilityPoints .ButtonPanel .Button.Cancel Label {
+	horizontal-align: center;
+	vertical-align: center;
+}
+
+.AbilityPoints .ButtonPanel.Active .Button.Action {
+    visibility: collapse;
+}
+
+.AbilityPoints .ButtonPanel.Active .Button.Cancel {
+    visibility: visible;
+}
+
+.AbilityPoints .ButtonPanel.Disabled .Button.Action {
+	background-color: #00000088;
+
+	border-left: 1px solid #ffffff08;
+	border-top: 1px solid #ffffff08;
+	border-right: 1px solid #000000ff;
+	border-bottom: 1px solid #000000ff;
+}
+
+.AbilityPoints .ButtonPanel.Disabled:hover .Button.Action {
+	background-color: #00000088;
+}
+
+
+
+.AbilityPoints .ButtonPanel.RandomizeAbility .Button.Action {
+	background-image: url("s2r://panorama/images/custom_game/swapskill_png.vtex");
+	background-repeat: no-repeat;
+	background-position: 14px 6px;
+	background-size: 32px 32px;
+}
+
+
+
+.AbilityPoints .ButtonPanel.ExchangePoints .Button.Action {
+	background-image: url("s2r://panorama/images/primary_attribute_icons/primary_attribute_icon_strength_psd.vtex"),
+	    url("s2r://panorama/images/primary_attribute_icons/primary_attribute_icon_agility_psd.vtex"),
+	    url("s2r://panorama/images/primary_attribute_icons/primary_attribute_icon_intelligence_psd.vtex");
+	background-repeat: no-repeat;
+	background-position: 21px 2px, 12px 19px, 31px 19px;
+	background-size: 20px 20px;
+}

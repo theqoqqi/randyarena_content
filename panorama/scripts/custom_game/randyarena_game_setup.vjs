@@ -1,0 +1,123 @@
+var Callbacks = {};
+
+(function() {
+
+	var $startPointsDropDown = $('#GoldMultiplierDropDown');
+	var $initialRandomsDropDown = $('#XPMultiplierDropDown');
+	var $forceRulesDropDown = $('#RuneBalancingDropDown');
+
+	var dropDownsByOptionNames = {
+		startPoints: $startPointsDropDown,
+		freeRandoms: $initialRandomsDropDown,
+		forceRules: $forceRulesDropDown,
+	};
+
+	var allDropDownOptions = {};
+
+	Callbacks.onChangeGoldMultiplier = CreateDropDownCallback(
+		$startPointsDropDown, 'startPoints');
+	Callbacks.onChangeXPMultiplier = CreateDropDownCallback(
+		$initialRandomsDropDown, 'freeRandoms');
+	Callbacks.onChangeRuneBalancing = CreateDropDownCallback(
+		$forceRulesDropDown, 'forceRules');
+
+	GameEvents.Subscribe('init_game_setup', OnInitGameSetup);
+	GameEvents.Subscribe('update_game_setup', OnUpdateGameSetup);
+
+	GameEvents.SendCustomGameEventToServer('game_setup_ui_loaded', {});
+
+	function OnInitGameSetup(event) {
+		InitDropDownOptions(
+			$startPointsDropDown,
+			'Start points: %value%',
+			event.startPoints.options,
+			event.startPoints.defaultIndex,
+			event.canChange
+		);
+		InitDropDownOptions(
+			$initialRandomsDropDown,
+			function (value) {
+				return value ? 'Free randoms: %value%' : 'Swap abilities on start';
+			},
+			event.freeRandoms.options,
+			event.freeRandoms.defaultIndex,
+			event.canChange
+		);
+		InitDropDownOptions(
+			$forceRulesDropDown,
+			function (value) {
+				return value ? 'Rules for %value% players' : 'Default rules';
+			},
+			event.forceRules.options,
+			event.forceRules.defaultIndex,
+			event.canChange
+		);
+	}
+
+	function OnUpdateGameSetup(event) {
+		var $dd = dropDownsByOptionNames[event.optionName];
+		$dd.SetSelected(event.optionIndex);
+	}
+
+	function InitDropDownOptions($dd, textTemplate, values, selectedIndex, enabled) {
+		var dropDownId = $dd.id;
+		var dropDownOptions = allDropDownOptions[dropDownId] = {
+			ids: [],
+			byIds: {}
+		};
+		var idPrefix = dropDownId + '_';
+		$.Each(values, function(value) {
+			var optionId = idPrefix + value;
+			var text = typeof textTemplate === 'function'
+				? textTemplate(value).replace('%value%', value)
+				: textTemplate.replace('%value%', value);
+			var $option = appendXml($dd, 'Label', {
+				id: optionId,
+				text: text,
+				value: value
+			});
+			dropDownOptions.ids.push(optionId);
+			dropDownOptions.byIds[optionId] = value;
+			$dd.AddOption($option);
+		});
+        $dd.enabled = enabled;
+		$dd.SetSelected(selectedIndex);
+	}
+
+	function CreateDropDownCallback($dropDown, changedOption) {
+		return function() {
+			var selectedOption = $dropDown.GetSelected();
+			var selectedIndex = allDropDownOptions[$dropDown.id].ids.indexOf(selectedOption.id);
+			GameEvents.SendCustomGameEventToServer('update_game_setup', {
+				optionName: changedOption,
+				optionIndex: selectedIndex,
+			});
+		};
+	}
+
+	function appendXml($parent, tagName, attributes) {
+		$parent.BCreateChildren(createElementXml(tagName, attributes));
+		return $parent.GetChild($parent.GetChildCount() - 1);
+	}
+
+	function createElementXml(tagName, attributes) {
+		return '<' + tagName + ' ' + stringifyAttributes(attributes) + '/>';
+	}
+
+	function stringifyAttributes(attributes) {
+		var attributesString = '';
+		$.Each(attributes, function(value, style) {
+			attributesString += style + '="' + value + '" ';
+		});
+		return attributesString;
+	}
+
+	function stringifyStyles(styles) {
+		var stylesString = '';
+		$.Each(styles, function(value, style) {
+			stylesString += style + ':' + value + ';';
+		});
+		return stylesString;
+	}
+
+})();

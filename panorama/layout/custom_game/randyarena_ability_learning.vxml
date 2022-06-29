@@ -1,0 +1,13 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_ability_learning.vcss" />
+	</styles>
+	<scripts>
+		<include src="s2r://panorama/scripts/custom_game/randyarena_ability_learning.vjs" />
+	</scripts>
+	<Panel hittest="false" class="Root">
+		<Panel id="AbilitySwapPanel" hittest="false" class="AbilitiesWrapper">
+		</Panel>
+	</Panel>
+</root>

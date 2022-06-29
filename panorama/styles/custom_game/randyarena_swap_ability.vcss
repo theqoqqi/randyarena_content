@@ -1,0 +1,263 @@
+Panel.AbilitiesWrapper {
+	horizontal-align: center;
+	vertical-align: bottom;
+
+	flow-children: down;
+
+	transform: translateY(402px);
+}
+
+Panel.AbilitiesWrapper.WithTransition {
+	transition-property: transform;
+	transition-duration: 1s;
+	transition-delay: 2s;
+	transition-timing-function: ease-in-out;
+}
+
+Panel.AbilitiesWrapper.Visible {
+	transform: translateY(0px);
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox {
+	height: 140px;
+	width: 100%;
+
+	flow-children: down;
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox Label {
+	color: white;
+	font-weight: bold;
+	margin: 0px;
+	horizontal-align: center;
+	text-shadow: 4px 4px 4px #121212;
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox Label.Normal {
+	font-size: 32px;
+	margin-bottom: -8px;
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox Label.Small {
+	font-size: 20px;
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox Label.Small.TimeoutLabel {
+	visibility: collapse;
+}
+
+Panel.AbilitiesWrapper Panel.MessageBox Label.Small.TimeoutLabel.Visible {
+	visibility: visible;
+}
+
+Panel.AbilitiesWrapper Panel.AbilitiesOverlay {
+	horizontal-align: center;
+	vertical-align: bottom;
+	margin-left: 219px;
+	margin-right: 354px;
+	margin-bottom: 50px;
+
+	min-width: 321px;
+
+	flow-children: right;
+}
+
+
+Panel.TalentPlaceholder {
+	width: 62px;
+	height: 62px;
+	margin-right: 3px;
+	margin-bottom: 28px;
+
+	vertical-align: bottom;
+
+	/*border: 1px solid #ab1234ff;*/
+}
+
+Panel.Abilities {
+
+	padding-left: -2px;
+	padding-right: -2px;
+
+	flow-children: right;
+
+	/*background-color: #abcdef11;*/
+}
+
+Panel.Abilities.Layout-1 {
+
+}
+
+Panel.Abilities.Layout-2 {
+
+}
+
+Panel.Abilities.Layout-3 {
+
+}
+
+Panel.Abilities.Layout-4 {
+
+}
+
+Panel.Abilities.Layout-5 {
+
+}
+
+Panel.Abilities.Layout-6 {
+
+}
+
+
+
+Panel.AbilityContainer {
+	height: 129px;
+	/*background-color: #abcdef11;*/
+}
+
+Panel.Abilities.Layout-1 Panel.AbilityContainer {
+	width: 65px;
+}
+Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability1 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability2 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability3 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability4 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability5 {
+	visibility: collapse;
+}
+
+Panel.Abilities.Layout-2 Panel.AbilityContainer {
+	width: 65px;
+}
+Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability2 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability3 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability4 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability5 {
+	visibility: collapse;
+}
+
+Panel.Abilities.Layout-3 Panel.AbilityContainer {
+	width: 65px;
+}
+Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability3 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability4 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability5 {
+	visibility: collapse;
+}
+
+Panel.Abilities.Layout-4 Panel.AbilityContainer {
+	width: 65px;
+}
+Panel.Abilities.Layout-4 Panel.AbilityContainer.Ability3 {
+	visibility: collapse;
+}
+Panel.Abilities.Layout-4 Panel.AbilityContainer.Ability4 {
+	visibility: collapse;
+}
+
+Panel.Abilities.Layout-5 Panel.AbilityContainer {
+	width: 58px;
+}
+Panel.Abilities.Layout-5 Panel.AbilityContainer.Ability4 {
+	visibility: collapse;
+}
+
+Panel.Abilities.Layout-6 Panel.AbilityContainer {
+	width: 58px;
+}
+
+
+
+Panel.AbilityButton {
+
+	horizontal-align: center;
+	vertical-align: bottom;
+}
+
+Panel.Abilities.Layout-1 Panel.AbilityButton {
+	margin-bottom: 25px;
+	width: 64px;
+	height: 64px;
+}
+
+Panel.Abilities.Layout-2 Panel.AbilityButton {
+	margin-bottom: 25px;
+	width: 64px;
+	height: 64px;
+}
+
+Panel.Abilities.Layout-3 Panel.AbilityButton {
+	margin-bottom: 25px;
+	width: 64px;
+	height: 64px;
+}
+
+Panel.Abilities.Layout-4 Panel.AbilityButton {
+	margin-bottom: 25px;
+	width: 64px;
+	height: 64px;
+}
+
+Panel.Abilities.Layout-5 Panel.AbilityButton {
+	margin-bottom: 32px;
+	width: 54px;
+	height: 54px;
+}
+
+Panel.Abilities.Layout-6 Panel.AbilityButton {
+	margin-bottom: 32px;
+	width: 54px;
+	height: 54px;
+}
+
+
+
+Panel.AbilityButton Button {
+	width: 100%;
+	height: 100%;
+
+	border: 1px solid #ffffffff;
+}
+
+Panel.AbilityButton Button.Unselectable {
+	
+	background-color: #00000088;
+	border: 1px solid #ff0000ff;
+}
+
+Panel.AbilityButton Button.Selected {
+
+	background-color: #880000cc;
+	border: 1px solid #442200ff;
+}
+
+Panel.AbilityButton Button:hover {
+	background-color: #000000aa;
+	background-image: url("s2r://panorama/images/custom_game/swapskill_png.vtex");
+	background-position: center;
+	background-size: 80% 80%;
+	background-repeat: no-repeat no-repeat;
+}
+
+Panel.AbilityButton Button.Selected:hover {
+
+	background-color: #880000cc;
+}

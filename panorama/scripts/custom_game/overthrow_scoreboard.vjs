@@ -1,0 +1,42 @@
+"use strict";
+
+function OnGameSetup(data) {
+	$("#VictoryPoints").text = data.kills_to_win;
+}
+
+function UpdateTimer(data) {
+	// $.Msg("UpdateTimer: ", data);
+
+	var timerText = "";
+	timerText += data.timer_minute_10;
+	timerText += data.timer_minute_01;
+	timerText += ":";
+	timerText += data.timer_second_10;
+	timerText += data.timer_second_01;
+
+	$("#Timer").text = timerText;
+}
+
+function ShowTimer(data) {
+	$.Msg("ShowTimer: ", data);
+	$("#Timer").AddClass("timer_visible");
+}
+
+function AlertTimer(data) {
+	$.Msg("AlertTimer: ", data);
+	$("#Timer").AddClass("timer_alert");
+}
+
+function HideTimer(data) {
+	$.Msg("HideTimer: ", data);
+	$("#Timer").AddClass("timer_hidden");
+}
+
+(function() {
+    GameEvents.Subscribe("game_setup", OnGameSetup);
+    GameEvents.Subscribe("countdown", UpdateTimer);
+    GameEvents.Subscribe("show_timer", ShowTimer);
+    GameEvents.Subscribe("timer_alert", AlertTimer);
+    GameEvents.Subscribe("overtime_alert", HideTimer);
+})();
+

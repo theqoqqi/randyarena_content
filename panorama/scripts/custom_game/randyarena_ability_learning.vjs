@@ -1,0 +1,71 @@
+(function() {
+
+    var ABILITY_CAN_BE_UPGRADED = AbilityLearnResult_t.ABILITY_CAN_BE_UPGRADED;
+
+    var playerId = Players.GetLocalPlayer();
+    var heroEntityId = -1;
+    var abilityPoints = 0;
+
+	GameEvents.Subscribe('hero_spawned', OnHeroSpawned);
+
+    function OnHeroSpawned(event) {
+
+        heroEntityId = Players.GetPlayerHeroEntityIndex(playerId);
+
+        $.Schedule(0.01, function Update() {
+            $.Schedule(0.01, Update);
+            abilityPoints = Entities.GetAbilityPoints(heroEntityId);
+
+            if (Game.IsInAbilityLearnMode() && !CanLearnAnything(heroEntityId)) {
+                Game.EndAbilityLearnMode();
+            }
+        });
+    }
+
+    function CanLearnAnything(entityId) {
+        return HasAnyUpgradableAbility(entityId) || HasAnyUpgradableTalent(entityId);
+    }
+
+    function HasAnyUpgradableAbility(entityId) {
+        var abilityCount = Entities.GetAbilityCount(heroEntityId);
+        for (var i = 0; i < 6; i++) {
+            var abilityId = Entities.GetAbility(entityId, i);
+            var upgradable = abilityId !== -1
+                && Abilities.CanAbilityBeUpgraded(abilityId) === ABILITY_CAN_BE_UPGRADED;
+            if (upgradable) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function HasAnyUpgradableTalent(entityId) {
+        var talentIds = GetTalentIds(entityId);
+        for (var i = 0; i < 8; i += 2) {
+            if (CanLearnOneOfTalents(talentIds[i], talentIds[i + 1])) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function CanLearnOneOfTalents(talentId1, talentId2) {
+        return Abilities.GetLevel(talentId1) === 0
+            && Abilities.GetLevel(talentId2) === 0
+            && Abilities.CanAbilityBeUpgraded(talentId1) === ABILITY_CAN_BE_UPGRADED
+            && Abilities.CanAbilityBeUpgraded(talentId2) === ABILITY_CAN_BE_UPGRADED;
+    }
+
+    function GetTalentIds(entityId) {
+        var ids = [];
+        for (var i = 0; i < 24; i++) {
+            var abilityId = Entities.GetAbility(entityId, i);
+            var abilityName = Abilities.GetAbilityName(abilityId);
+            if (abilityId !== -1 && abilityName.indexOf('special_bonus') === 0) {
+                ids.push(abilityId);
+            }
+        }
+        return ids;
+    }
+
+})();

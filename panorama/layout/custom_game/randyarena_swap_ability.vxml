@@ -1,0 +1,11 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_swap_ability.vcss" />
+	</styles>
+	<scripts>
+		<include src="s2r://panorama/scripts/custom_game/randyarena_swap_ability.vjs" />
+	</scripts>
+	<Panel hittest="false" class="Root">
+	</Panel>
+</root>

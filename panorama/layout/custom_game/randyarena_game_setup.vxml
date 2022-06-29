@@ -1,0 +1,25 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_game_setup.vcss" />
+	</styles>
+	<scripts>
+		<include src="s2r://panorama/scripts/custom_game/randyarena_game_setup.vjs" />
+	</scripts>
+	<Panel class="Root" hittest="false">
+		<Panel id="GameSetupPanel" class="GameSetup" hittest="false">
+			<Panel class="Row">
+				<DropDown id="GoldMultiplierDropDown" oninputsubmit="Callbacks.onChangeGoldMultiplier()">
+				</DropDown>
+			</Panel>
+			<Panel class="Row">
+				<DropDown id="XPMultiplierDropDown" oninputsubmit="Callbacks.onChangeXPMultiplier()">
+				</DropDown>
+			</Panel>
+			<Panel class="Row">
+				<DropDown id="RuneBalancingDropDown" oninputsubmit="Callbacks.onChangeRuneBalancing()">
+				</DropDown>
+			</Panel>
+		</Panel>
+	</Panel>
+</root>

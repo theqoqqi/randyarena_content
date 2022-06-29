@@ -1,0 +1,114 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_base_hud.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_swap_ability.vcss" />
+	</styles>
+	<scripts>
+		<include src="s2r://panorama/scripts/custom_game/randyarena_base_hud.vjs" />
+		<include src="s2r://panorama/scripts/custom_game/randyarena_ability_learning_fix.vjs" />
+	</scripts>
+	<Panel hittest="false" class="Root">
+		<Panel id="AbilitySwapPanel" hittest="false" class="AbilitiesWrapper">
+			<Panel id="AbilitySwapMessageBoxPanel" hittest="false" class="MessageBox">
+				<Label class="Normal" text="#select_ability_to_replace" />
+				<Label id="AbilitySwapTimeoutWarningLabel"
+					class="Small TimeoutLabel" text="#select_ability_timeout_warning" />
+				<Label id="AbilitySwapTimeRemainingLabel"
+					class="Small TimeoutLabel" text="time remaining" />
+			</Panel>
+			<Panel hittest="false" class="AbilitiesOverlay">
+				<Panel hittest="false" class="TalentPlaceholder">
+
+				</Panel>
+				<Panel id="AbilityListPanel" hittest="false" class="Abilities Layout-4">
+					<Panel hittest="false" class="AbilityContainer Ability0">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability0" onactivate="Callbacks.onClickAbility(0)" />
+						</Panel>
+					</Panel>
+					<Panel hittest="false" class="AbilityContainer Ability1">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability1" onactivate="Callbacks.onClickAbility(1)" />
+						</Panel>
+					</Panel>
+					<Panel hittest="false" class="AbilityContainer Ability2">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability2" onactivate="Callbacks.onClickAbility(2)" />
+						</Panel>
+					</Panel>
+					<Panel hittest="false" class="AbilityContainer Ability3">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability3" onactivate="Callbacks.onClickAbility(3)" />
+						</Panel>
+					</Panel>
+					<Panel hittest="false" class="AbilityContainer Ability4">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability4" onactivate="Callbacks.onClickAbility(4)" />
+						</Panel>
+					</Panel>
+					<Panel hittest="false" class="AbilityContainer Ability5">
+						<Panel hittest="false" class="AbilityButton">
+							<Button id="Ability5" onactivate="Callbacks.onClickAbility(5)" />
+						</Panel>
+					</Panel>
+				</Panel>
+			</Panel>
+		</Panel>
+		<Panel hittest="false" class="HudContainer">
+			<Panel id="RandyArenaHud" hittest="false" class="HudOverlay">
+				<Panel hittest="false" class="HudPanel">
+					<Panel hittest="false" class="AbilitiesOverlay">
+						<Panel hittest="false" class="TalentPlaceholder"></Panel>
+						<Panel hittest="false" class="Abilities"></Panel>
+					</Panel>
+					<Panel hittest="false" class="HudAddon">
+						<Panel hittest="false" class="AbilityPoints">
+							<Panel id="AbilityPointsCountPanel"
+							    class="AbilityPointsCountPanel"
+								onmouseover="DOTAShowTitleTextTooltip(
+									#tooltip_ability_points_title,
+									#tooltip_ability_points_description
+								)"
+								onmouseout="DOTAHideTitleTextTooltip()">
+								<Panel class="AbilityPointsCountWrapper" hittest="false">
+									<Label id="AbilityPointsCount" text="0" hittest="false" />
+								</Panel>
+								<Panel class="Icon" hittest="false"></Panel>
+							</Panel>
+							<Panel id="RandomizeAbilityButton"
+								class="ButtonPanel RandomizeAbility"
+								onactivate="Callbacks.randomizeAbility()"
+								onmouseover="DOTAShowTitleTextTooltip(
+									#tooltip_randomize_ability_title,
+									#tooltip_randomize_ability_description
+								)"
+								onmouseout="DOTAHideTitleTextTooltip()">
+								<Panel class="Button Action"></Panel>
+								<Panel class="Button Cancel">
+									<Label text="#cancel"></Label>
+								</Panel>
+							</Panel>
+							<Panel id="ExchangePointsButton"
+								class="ButtonPanel ExchangePoints"
+								onactivate="Callbacks.exchangePoints()"
+							   	onmouseover="DOTAShowTitleTextTooltip(
+									#tooltip_exchange_points_title,
+									#tooltip_exchange_points_description
+								)"
+							   	onmouseout="DOTAHideTitleTextTooltip()">
+								<Panel class="Button Action"></Panel>
+								<Panel class="Button Cancel">
+									<Label text="#cancel"></Label>
+								</Panel>
+							</Panel>
+						</Panel>
+					</Panel>
+					<Panel class="RightFlare">
+
+					</Panel>
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+</root>

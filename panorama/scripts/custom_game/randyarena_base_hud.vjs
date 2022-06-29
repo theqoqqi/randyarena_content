@@ -1,0 +1,290 @@
+var Callbacks = {};
+
+(function() {
+
+    var playerId = Players.GetLocalPlayer();
+
+    if (Players.IsSpectator(playerId)) {
+        return;
+    }
+
+	var $abilitySwapPanel = $('#AbilitySwapPanel');
+	var $abilityListPanel = $('#AbilityListPanel');
+	var $abilitySwapMessageBoxPanel = $('#AbilitySwapMessageBoxPanel');
+	var $abilitySwapTimeRemainingLabel = $('#AbilitySwapTimeRemainingLabel');
+	var $abilitySwapTimeoutWarningLabel = $('#AbilitySwapTimeoutWarningLabel');
+	var selectAbilityCallback = function() {};
+	var timeRemaining = 0;
+	var currentSwapMode = null;
+
+    var heroEntityId = -1;
+
+    var $hud = $('#RandyArenaHud');
+    var $abilityPointsCountPanel = $('#AbilityPointsCountPanel');
+    var $abilityPointsCountLabel = $('#AbilityPointsCount');
+    var $randomizeAbilityButton = $('#RandomizeAbilityButton');
+    var $exchangePointsButton = $('#ExchangePointsButton');
+
+    $hud.SetHasClass('Visible', true);
+	$abilitySwapPanel.SetHasClass('Visible', true);
+
+	GameEvents.Subscribe('self_reconnected', OnReconnect);
+	GameEvents.Subscribe('hero_spawned', OnHeroSpawned);
+	GameEvents.Subscribe('abilities_scrambled', OnAbilitiesScrambled);
+	GameEvents.Subscribe('ability_chest_used', OnAbilityChestUsed);
+	GameEvents.Subscribe('ability_chest_timeout', OnAbilityChestTimeout);
+	GameEvents.Subscribe('randomize_ability_response', OnRandomizeAbilityResponse);
+	GameEvents.Subscribe('show_error_message', OnShowErrorMessage);
+
+	$.Schedule(0.1, function EverySecond() {
+		$.Schedule(0.1, EverySecond);
+		if (!Game.IsGamePaused() && $abilitySwapPanel.visible) {
+		    SetCurrentSeconds(Math.round(timeRemaining));
+		    var gameTime = Game.GetGameTime();
+		    if (gameTime <= 0) {
+		        timeRemaining = -gameTime;
+		    } else {
+                timeRemaining -= 0.1;
+		    }
+		}
+
+		if (heroEntityId == -1) {
+			OnReconnect();
+		}
+
+        var abilityPoints = Entities.GetAbilityPoints(heroEntityId);
+
+        $randomizeAbilityButton.enabled = abilityPoints >= 3 || currentSwapMode === 'randomize';
+        $randomizeAbilityButton.SetHasClass('Disabled', abilityPoints < 3);
+
+        $exchangePointsButton.enabled = abilityPoints >= 1;
+        $exchangePointsButton.SetHasClass('Disabled', abilityPoints === 0);
+	});
+
+
+    $abilityPointsCountPanel.SetPanelEvent(
+        'onmouseover',
+        function() {
+            $.DispatchEvent(
+                'DOTAShowTextTooltip',
+                $abilityPointsCountPanel,
+                '#tooltip_ability_points_title'
+            );
+        }
+    );
+
+	Callbacks.onClickAbility = function(index) {
+		var $button = GetAbilityButton(index);
+		if ($button.BHasClass('Unselectable')) {
+			return;
+		}
+		selectAbilityCallback(index, $button);
+	};
+
+    Callbacks.randomizeAbility = function() {
+        if (currentSwapMode === null) {
+            GameEvents.SendCustomGameEventToServer('randomize_ability_request', {});
+            $randomizeAbilityButton.SetHasClass('Active', true);
+
+        } else if (currentSwapMode === 'randomize') {
+            GameEvents.SendCustomGameEventToServer('randomize_ability_cancelled', {});
+            $randomizeAbilityButton.SetHasClass('Active', false);
+            HideSwapAbilityOverlay();
+        }
+    };
+
+    Callbacks.exchangePoints = function() {
+        GameEvents.SendCustomGameEventToServer('exchange_ability_point', {});
+    };
+
+
+
+    function OnReconnect(event) {
+		heroEntityId = Players.GetPlayerHeroEntityIndex(playerId);
+
+		$abilitySwapPanel.SetHasClass('Visible', Game.GetGameTime() < 0);
+
+		if (heroEntityId > 0) {
+			InitUIAfterHeroSpawned();
+		}
+	}
+
+    function OnHeroSpawned(event) {
+
+        heroEntityId = Players.GetPlayerHeroEntityIndex(playerId);
+
+		ShowSwapAbilityOverlay('swap', event.abilityCount, true, true);
+		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
+		timeRemaining = event.timeToSelect;
+
+		if (event.useScrambler) {
+			selectAbilityCallback = function (index, $button) {
+				ForEachAbilityButton(function ($btn, i) {
+					$btn.SetHasClass('Selected', i == index);
+				});
+				GameEvents.SendCustomGameEventToServer('ability_scrambled', {
+					abilityIndex: index
+				});
+			};
+		} else {
+			selectAbilityCallback = function (index, $button) {
+				GameEvents.SendCustomGameEventToServer('ability_randomized', {
+					abilityIndex: index
+				});
+			};
+		}
+
+		InitUIAfterHeroSpawned();
+    }
+
+    function InitUIAfterHeroSpawned() {
+
+		$.Schedule(0.1, function Update() {
+			$.Schedule(0.1, Update);
+			var abilityPoints = Entities.GetAbilityPoints(heroEntityId);
+
+			$abilityPointsCountLabel.text = abilityPoints;
+
+			if (Players.GetLocalPlayerPortraitUnit() === heroEntityId) {
+				SetLayout(GetVisibleAbilityCount(heroEntityId));
+			} else {
+				SetLayout(0);
+			}
+		});
+	}
+
+
+
+    function GetVisibleAbilityCount(entityId) {
+        var count = 0;
+        for (var i = 0; i < 6; i++) {
+            var abilityId = Entities.GetAbility(entityId, i);
+            var abilityName = Abilities.GetAbilityName(abilityId);
+            if (abilityName !== 'generic_hidden') {
+                count++;
+            }
+        }
+        return count;
+    }
+
+	function SetLayout(abilityCount) {
+		$hud.SetHasClass('Layout-1', abilityCount == 1);
+		$hud.SetHasClass('Layout-2', abilityCount == 2);
+		$hud.SetHasClass('Layout-3', abilityCount == 3);
+		$hud.SetHasClass('Layout-4', abilityCount == 4);
+		$hud.SetHasClass('Layout-5', abilityCount == 5);
+		$hud.SetHasClass('Layout-6', abilityCount == 6);
+	}
+
+
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	function OnAbilitiesScrambled(event) {
+		HideSwapAbilityOverlay();
+	}
+
+	function OnAbilityChestUsed(event) {
+
+		ShowSwapAbilityOverlay('replace', event.abilityCount, true, false);
+		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
+		timeRemaining = event.timeToSelect;
+
+		selectAbilityCallback = function(index, $button) {
+			GameEvents.SendCustomGameEventToServer('ability_swapped', { abilityIndex: index });
+			HideSwapAbilityOverlay();
+		};
+	}
+
+	function OnAbilityChestTimeout(event) {
+		HideSwapAbilityOverlay();
+	}
+
+	function OnRandomizeAbilityResponse(event) {
+	    $.Msg('OnRandomizeAbilityResponse');
+		ShowSwapAbilityOverlay('randomize', event.abilityCount, false, false);
+		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
+
+		selectAbilityCallback = function(index, $button) {
+			GameEvents.SendCustomGameEventToServer('ability_randomized', { abilityIndex: index });
+            $randomizeAbilityButton.SetHasClass('Active', false);
+			HideSwapAbilityOverlay();
+		};
+    }
+
+	function OnShowErrorMessage(event) {
+		GameUI.SendCustomHUDError(event.message, 'General.NoGold');
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	function SetCurrentSeconds(seconds) {
+        $abilitySwapMessageBoxPanel.SetDialogVariableInt("seconds", seconds);
+        $abilitySwapTimeRemainingLabel.text = $.Localize(
+            "#select_ability_remaining_time", $abilitySwapMessageBoxPanel);
+	}
+
+	function SetSelectableAbilities(abilities) {
+		ForEachAbilityButton(function($button, index) {
+			var allowed = abilities.indexOf(index) != -1;
+			$button.SetHasClass('Unselectable', !allowed);
+		});
+	}
+
+	function ForEachAbilityButton(callback) {
+		for (var i = 0; i < 6; i++) {
+			callback(GetAbilityButton(i), i);
+		}
+	}
+
+	function GetAbilityButton(index) {
+		return $abilityListPanel.GetChild(index).GetChild(0).GetChild(0);
+	}
+
+	function ShowSwapAbilityOverlay(swapMode, abilityCount, showTimer, withTransition) {
+	    currentSwapMode = swapMode;
+	    showTimer = showTimer === undefined || !!showTimer;
+		withTransition = withTransition === undefined || !!withTransition;
+
+		$abilitySwapPanel.SetHasClass('WithTransition', withTransition);
+		$abilitySwapPanel.SetHasClass('Visible', true);
+		$abilitySwapTimeRemainingLabel.SetHasClass('Visible', showTimer);
+		$abilitySwapTimeoutWarningLabel.SetHasClass('Visible', showTimer);
+
+		ForEachAbilityButton(function($btn, i) {
+			$btn.RemoveClass('Unselectable');
+			$btn.RemoveClass('Selected');
+		});
+
+		SetLayoutForSwapAbility(abilityCount);
+	}
+
+	function HideSwapAbilityOverlay() {
+		$abilitySwapPanel.SetHasClass('WithTransition', false);
+		$abilitySwapPanel.SetHasClass('Visible', false);
+
+		currentSwapMode = null;
+	}
+
+	function SetLayoutForSwapAbility(abilityCount) {
+		$abilityListPanel.SetHasClass('Layout-1', abilityCount == 1);
+		$abilityListPanel.SetHasClass('Layout-2', abilityCount == 2);
+		$abilityListPanel.SetHasClass('Layout-3', abilityCount == 3);
+		$abilityListPanel.SetHasClass('Layout-4', abilityCount == 4);
+		$abilityListPanel.SetHasClass('Layout-5', abilityCount == 5);
+		$abilityListPanel.SetHasClass('Layout-6', abilityCount == 6);
+	}
+
+	function NormalizeLuaAssocArray(luaArray) {
+		return NormalizeLuaArray(luaArray, {});
+	}
+
+	function NormalizeLuaArray(luaArray, initial) {
+		var jsArray = initial || [];
+		$.Each(luaArray, function(value, luaIndex) {
+			jsArray[luaIndex - 1] = value;
+		});
+		return jsArray;
+	}
+
+})();

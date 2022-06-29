@@ -1,0 +1,34 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/dotastyles.vcss" />
+		<include src="s2r://panorama/styles/custom_game/randyarena_game_info.vcss" />
+	</styles>
+	<Panel class="GameInfo">
+		<Panel class="AddonName">
+			<Label text="#addon_game_name" />
+		</Panel>
+		<Panel class="Block">
+			<Label html="true" class="Title" text="#game_info_objective_header" />
+			<Label html="true" class="Text" text="#game_info_objective_text" />
+		</Panel>
+		<Panel class="Block">
+			<Label html="true" class="Title" text="#game_info_scramble_header" />
+			<Label html="true" class="Text" text="#game_info_scramble_text" />
+			<Label html="true" class="Text Warning" text="#game_info_scramble_warning" />
+		</Panel>
+		<Panel class="Block">
+			<Label html="true" class="Title" text="#game_info_circle_header" />
+			<Label html="true" class="Text" text="#game_info_circle_text" />
+		</Panel>
+		<Panel class="Block">
+			<Label html="true" class="Title" text="#game_info_chest_header" />
+			<Label html="true" class="Text" text="#game_info_chest_text" />
+			<Label html="true" class="Text Warning" text="#game_info_chest_warning" />
+		</Panel>
+		<Panel class="Block">
+			<Label html="true" class="Title" text="#game_info_bounty_header" />
+			<Label html="true" class="Text" text="#game_info_bounty_text" />
+		</Panel>
+	</Panel>
+</root>
+

@@ -1,0 +1,150 @@
+Callbacks = Callbacks || {};
+
+(function() {
+
+    var playerId = Players.GetLocalPlayer();
+
+    if (Players.IsSpectator(playerId)) {
+        return;
+    }
+
+	var $abilitySwapPanel = $('#AbilitySwapPanel');
+	var $abilityListPanel = $('#AbilityListPanel');
+	var $abilitySwapMessageBoxPanel = $('#AbilitySwapMessageBoxPanel');
+	var $abilitySwapTimeRemainingLabel = $('#AbilitySwapTimeRemainingLabel');
+	var selectAbilityCallback = function() {};
+	var timeRemaining = 0;
+
+    $abilitySwapPanel.SetHasClass('Visible', true);
+
+	GameEvents.Subscribe('hero_spawned', OnHeroSpawned);
+	GameEvents.Subscribe('abilities_scrambled', OnAbilitiesScrambled);
+	GameEvents.Subscribe('ability_chest_used', OnAbilityChestUsed);
+	GameEvents.Subscribe('ability_chest_timeout', OnAbilityChestTimeout);
+	GameEvents.Subscribe('RandomizeAbility', function(event) {
+	    $.Msg('RandomizeAbility');
+	});
+
+	Callbacks.onClickAbility = function(index) {
+		var $button = GetAbilityButton(index);
+		if ($button.BHasClass('Unselectable')) {
+			return;
+		}
+		selectAbilityCallback(index, $button);
+	};
+
+	$.Schedule(0.1, function EverySecond() {
+		$.Schedule(0.1, EverySecond);
+		if (!Game.IsGamePaused() && $abilitySwapPanel.visible) {
+		    SetCurrentSeconds(Math.round(timeRemaining));
+		    var gameTime = Game.GetGameTime();
+		    if (gameTime <= 0) {
+		        timeRemaining = -gameTime;
+		    } else {
+                timeRemaining -= 0.1;
+		    }
+		}
+	});
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	function OnHeroSpawned(event) {
+
+        var playerId = Players.GetLocalPlayer();
+
+        if (Players.IsSpectator(playerId)) {
+            return;
+        }
+
+		ShowSwapAbilityOverlay(event.abilityCount);
+		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
+		timeRemaining = event.timeToSelect;
+
+		selectAbilityCallback = function(index, $button) {
+			ForEachAbilityButton(function($btn, i) {
+				$btn.SetHasClass('Selected', i == index);
+			});
+			GameEvents.SendCustomGameEventToServer('ability_scrambled', { abilityIndex: index });
+		};
+	}
+
+	function OnAbilitiesScrambled(event) {
+		HideSwapAbilityOverlay();
+	}
+
+	function OnAbilityChestUsed(event) {
+
+		ShowSwapAbilityOverlay(event.abilityCount);
+		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
+		timeRemaining = event.timeToSelect;
+
+		selectAbilityCallback = function(index, $button) {
+			GameEvents.SendCustomGameEventToServer('ability_swapped', { abilityIndex: index });
+			HideSwapAbilityOverlay();
+		};
+	}
+
+	function OnAbilityChestTimeout(event) {
+		HideSwapAbilityOverlay();
+	}
+
+	// ----------------------------------------------------------------------------------------------------------
+
+	function SetCurrentSeconds(seconds) {
+        $abilitySwapMessageBoxPanel.SetDialogVariableInt("seconds", seconds);
+        $abilitySwapTimeRemainingLabel.text = $.Localize(
+            "#select_ability_remaining_time", $abilitySwapMessageBoxPanel);
+	}
+
+	function SetSelectableAbilities(abilities) {
+		ForEachAbilityButton(function($button, index) {
+			var allowed = abilities.indexOf(index) != -1;
+			$button.SetHasClass('Unselectable', !allowed);
+		});
+	}
+
+	function ForEachAbilityButton(callback) {
+		for (var i = 0; i < 6; i++) {
+			callback(GetAbilityButton(i), i);
+		}
+	}
+
+	function GetAbilityButton(index) {
+		return $abilityListPanel.GetChild(index).GetChild(0).GetChild(0);
+	}
+
+	function ShowSwapAbilityOverlay(abilityCount) {
+		$abilitySwapPanel.visible = true;
+		ForEachAbilityButton(function($btn, i) {
+			$btn.RemoveClass('Unselectable');
+			$btn.RemoveClass('Selected');
+		});
+		SetLayout(abilityCount);
+	}
+
+	function HideSwapAbilityOverlay() {
+		$abilitySwapPanel.visible = false;
+	}
+
+	function SetLayout(abilityCount) {
+		$abilityListPanel.SetHasClass('Layout-1', abilityCount == 1);
+		$abilityListPanel.SetHasClass('Layout-2', abilityCount == 2);
+		$abilityListPanel.SetHasClass('Layout-3', abilityCount == 3);
+		$abilityListPanel.SetHasClass('Layout-4', abilityCount == 4);
+		$abilityListPanel.SetHasClass('Layout-5', abilityCount == 5);
+		$abilityListPanel.SetHasClass('Layout-6', abilityCount == 6);
+	}
+
+	function NormalizeLuaAssocArray(luaArray) {
+		return NormalizeLuaArray(luaArray, {});
+	}
+
+	function NormalizeLuaArray(luaArray, initial) {
+		var jsArray = initial || [];
+		$.Each(luaArray, function(value, luaIndex) {
+			jsArray[luaIndex - 1] = value;
+		});
+		return jsArray;
+	}
+
+})();
