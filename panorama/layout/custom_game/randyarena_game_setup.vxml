@@ -20,6 +20,10 @@
 				<DropDown id="RuneBalancingDropDown" oninputsubmit="Callbacks.onChangeRuneBalancing()">
 				</DropDown>
 			</Panel>
+			<Panel class="Row">
+				<DropDown id="ComebackFactorDropDown" oninputsubmit="Callbacks.onChangeComebackFactor()">
+				</DropDown>
+			</Panel>
 		</Panel>
 	</Panel>
 </root>

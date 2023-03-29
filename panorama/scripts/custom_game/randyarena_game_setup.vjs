@@ -5,11 +5,13 @@ var Callbacks = {};
 	var $startPointsDropDown = $('#GoldMultiplierDropDown');
 	var $initialRandomsDropDown = $('#XPMultiplierDropDown');
 	var $forceRulesDropDown = $('#RuneBalancingDropDown');
+	var $comebackFactorDropDown = $('#ComebackFactorDropDown');
 
 	var dropDownsByOptionNames = {
 		startPoints: $startPointsDropDown,
 		freeRandoms: $initialRandomsDropDown,
 		forceRules: $forceRulesDropDown,
+		comebackFactor: $comebackFactorDropDown,
 	};
 
 	var allDropDownOptions = {};
@@ -20,6 +22,8 @@ var Callbacks = {};
 		$initialRandomsDropDown, 'freeRandoms');
 	Callbacks.onChangeRuneBalancing = CreateDropDownCallback(
 		$forceRulesDropDown, 'forceRules');
+	Callbacks.onChangeComebackFactor = CreateDropDownCallback(
+		$comebackFactorDropDown, 'comebackFactor');
 
 	GameEvents.Subscribe('init_game_setup', OnInitGameSetup);
 	GameEvents.Subscribe('update_game_setup', OnUpdateGameSetup);
@@ -52,6 +56,15 @@ var Callbacks = {};
 			event.forceRules.defaultIndex,
 			event.canChange
 		);
+		InitDropDownOptions(
+			$comebackFactorDropDown,
+			function (value) {
+				return value ? 'Comeback power: %value%x' : 'Default rules';
+			},
+			event.comebackFactor.options,
+			event.comebackFactor.defaultIndex,
+			event.canChange
+		);
 	}
 
 	function OnUpdateGameSetup(event) {
@@ -66,20 +79,24 @@ var Callbacks = {};
 			byIds: {}
 		};
 		var idPrefix = dropDownId + '_';
+
+		$dd.RemoveAllOptions();
+
 		$.Each(values, function(value) {
 			var optionId = idPrefix + value;
 			var text = typeof textTemplate === 'function'
 				? textTemplate(value).replace('%value%', value)
 				: textTemplate.replace('%value%', value);
-			var $option = appendXml($dd, 'Label', {
-				id: optionId,
-				text: text,
-				value: value
-			});
+
+			var $option = $.CreatePanel('Label', $dd, optionId);
+			$option.text = text;
+
 			dropDownOptions.ids.push(optionId);
 			dropDownOptions.byIds[optionId] = value;
+
 			$dd.AddOption($option);
 		});
+
         $dd.enabled = enabled;
 		$dd.SetSelected(selectedIndex);
 	}
@@ -88,20 +105,13 @@ var Callbacks = {};
 		return function() {
 			var selectedOption = $dropDown.GetSelected();
 			var selectedIndex = allDropDownOptions[$dropDown.id].ids.indexOf(selectedOption.id);
+			$.Msg(changedOption + ': ' + selectedIndex + ' DD: ' + $dropDown.id + ', OID: ' + selectedOption.id);
+			$.Msg(allDropDownOptions);
 			GameEvents.SendCustomGameEventToServer('update_game_setup', {
 				optionName: changedOption,
 				optionIndex: selectedIndex,
 			});
 		};
-	}
-
-	function appendXml($parent, tagName, attributes) {
-		$parent.BCreateChildren(createElementXml(tagName, attributes));
-		return $parent.GetChild($parent.GetChildCount() - 1);
-	}
-
-	function createElementXml(tagName, attributes) {
-		return '<' + tagName + ' ' + stringifyAttributes(attributes) + '/>';
 	}
 
 	function stringifyAttributes(attributes) {
