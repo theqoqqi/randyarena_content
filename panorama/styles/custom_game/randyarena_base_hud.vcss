@@ -141,7 +141,7 @@ Panel.HudOverlay Panel.HudAddon {
 
 	flow-children: down;
 
-	background-image: url("s2r://panorama/images/custom_game/hud_addon_png.vtex");
+	background-image: url("file://{images}/custom_game/hud_addon.png");
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 	background-size: 100% 100%;
@@ -277,7 +277,7 @@ Panel.HudOverlay Panel.RightFlare {
 
 
 .AbilityPoints .ButtonPanel.RandomizeAbility .Button.Action {
-	background-image: url("s2r://panorama/images/custom_game/swapskill_png.vtex");
+	background-image: url("file://{images}/custom_game/swap_skill.png");
 	background-repeat: no-repeat;
 	background-position: 14px 6px;
 	background-size: 32px 32px;
