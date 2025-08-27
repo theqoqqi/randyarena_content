@@ -86,7 +86,7 @@ Panel.AbilitiesOverlay {
 
 
 Panel.TalentPlaceholder {
-	width: 62px;
+	width: 100px;
 	height: 62px;
 	margin-right: 3px;
 	margin-bottom: 28px;
