@@ -24,32 +24,44 @@
 				<Panel id="AbilityListPanel" hittest="false" class="Abilities Layout-4">
 					<Panel hittest="false" class="AbilityContainer Ability0">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability0" onactivate="Callbacks.onClickAbility(0)" />
+							<Button id="Ability0" onactivate="Callbacks.onClickAbility(0)">
+								<Label class="AbilityLabel" text="Q" />
+							</Button>
 						</Panel>
 					</Panel>
 					<Panel hittest="false" class="AbilityContainer Ability1">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability1" onactivate="Callbacks.onClickAbility(1)" />
+							<Button id="Ability1" onactivate="Callbacks.onClickAbility(1)">
+								<Label class="AbilityLabel" text="W" />
+							</Button>
 						</Panel>
 					</Panel>
 					<Panel hittest="false" class="AbilityContainer Ability2">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability2" onactivate="Callbacks.onClickAbility(2)" />
+							<Button id="Ability2" onactivate="Callbacks.onClickAbility(2)">
+								<Label class="AbilityLabel" text="E" />
+							</Button>
 						</Panel>
 					</Panel>
 					<Panel hittest="false" class="AbilityContainer Ability3">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability3" onactivate="Callbacks.onClickAbility(3)" />
+							<Button id="Ability3" onactivate="Callbacks.onClickAbility(3)">
+								<Label class="AbilityLabel" text="D" />
+							</Button>
 						</Panel>
 					</Panel>
 					<Panel hittest="false" class="AbilityContainer Ability4">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability4" onactivate="Callbacks.onClickAbility(4)" />
+							<Button id="Ability4" onactivate="Callbacks.onClickAbility(4)">
+								<Label class="AbilityLabel" text="F" />
+							</Button>
 						</Panel>
 					</Panel>
 					<Panel hittest="false" class="AbilityContainer Ability5">
 						<Panel hittest="false" class="AbilityButton">
-							<Button id="Ability5" onactivate="Callbacks.onClickAbility(5)" />
+							<Button id="Ability5" onactivate="Callbacks.onClickAbility(5)">
+								<Label class="AbilityLabel" text="R" />
+							</Button>
 						</Panel>
 					</Panel>
 				</Panel>

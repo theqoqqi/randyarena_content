@@ -261,3 +261,22 @@ Panel.AbilityButton Button.Selected:hover {
 
 	background-color: #880000cc;
 }
+
+
+
+Panel.AbilityButton Button .AbilityLabel {
+	width: 32px;
+	height: 32px;
+
+	horizontal-align: center;
+	vertical-align: middle;
+	text-align: center;
+
+	color: #ffffff;
+	background-color: #000000ee;
+	border-radius: 16px;
+
+	font-size: 24px;
+	line-height: 30px;
+	text-shadow: 0 0 4px #880000;
+}
