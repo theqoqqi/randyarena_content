@@ -57,6 +57,7 @@ Callbacks = Callbacks || {};
         }
 
 		ShowSwapAbilityOverlay(event.abilityCount);
+		SetVisibleAbilities(NormalizeLuaArray(event.visibleAbilities));
 		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
 		timeRemaining = event.timeToSelect;
 
@@ -75,6 +76,7 @@ Callbacks = Callbacks || {};
 	function OnAbilityChestUsed(event) {
 
 		ShowSwapAbilityOverlay(event.abilityCount);
+		SetVisibleAbilities(NormalizeLuaArray(event.visibleAbilities));
 		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
 		timeRemaining = event.timeToSelect;
 
@@ -96,6 +98,14 @@ Callbacks = Callbacks || {};
             "#select_ability_remaining_time", $abilitySwapMessageBoxPanel);
 	}
 
+	function SetVisibleAbilities(abilities) {
+		ForEachAbilityButton(function($button, index) {
+			var $buttonContainer = GetAbilityButtonContainer(index);
+			var visible = abilities.indexOf(index) != -1;
+			$buttonContainer.SetHasClass('Visible', visible);
+		});
+	}
+
 	function SetSelectableAbilities(abilities) {
 		ForEachAbilityButton(function($button, index) {
 			var allowed = abilities.indexOf(index) != -1;
@@ -110,7 +120,11 @@ Callbacks = Callbacks || {};
 	}
 
 	function GetAbilityButton(index) {
-		return $abilityListPanel.GetChild(index).GetChild(0).GetChild(0);
+		return GetAbilityButtonContainer(index).GetChild(0).GetChild(0);
+	}
+
+	function GetAbilityButtonContainer(index) {
+		return $abilityListPanel.GetChild(index);
 	}
 
 	function ShowSwapAbilityOverlay(abilityCount) {

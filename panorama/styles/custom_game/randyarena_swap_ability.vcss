@@ -113,71 +113,33 @@ Panel.Abilities.Layout-6 {
 Panel.AbilityContainer {
 	height: 129px;
 	/*background-color: #abcdef11;*/
+	visibility: collapse;
 }
+
+Panel.AbilityContainer.Visible {
+	visibility: visible;
+}
+
+
 
 Panel.Abilities.Layout-1 Panel.AbilityContainer {
 	width: 65px;
-}
-Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability1 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability2 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability3 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability4 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-1 Panel.AbilityContainer.Ability5 {
-	visibility: collapse;
 }
 
 Panel.Abilities.Layout-2 Panel.AbilityContainer {
 	width: 65px;
 }
-Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability2 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability3 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability4 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-2 Panel.AbilityContainer.Ability5 {
-	visibility: collapse;
-}
 
 Panel.Abilities.Layout-3 Panel.AbilityContainer {
 	width: 65px;
-}
-Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability3 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability4 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-3 Panel.AbilityContainer.Ability5 {
-	visibility: collapse;
 }
 
 Panel.Abilities.Layout-4 Panel.AbilityContainer {
 	width: 65px;
 }
-Panel.Abilities.Layout-4 Panel.AbilityContainer.Ability3 {
-	visibility: collapse;
-}
-Panel.Abilities.Layout-4 Panel.AbilityContainer.Ability4 {
-	visibility: collapse;
-}
 
 Panel.Abilities.Layout-5 Panel.AbilityContainer {
 	width: 58px;
-}
-Panel.Abilities.Layout-5 Panel.AbilityContainer.Ability4 {
-	visibility: collapse;
 }
 
 Panel.Abilities.Layout-6 Panel.AbilityContainer {

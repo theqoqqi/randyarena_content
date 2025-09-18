@@ -114,6 +114,7 @@ var Callbacks = {};
         heroEntityId = Players.GetPlayerHeroEntityIndex(playerId);
 
 		ShowSwapAbilityOverlay('swap', event.abilityCount, true, true);
+		SetVisibleAbilities(NormalizeLuaArray(event.visibleAbilities));
 		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
 		timeRemaining = event.timeToSelect;
 
@@ -187,6 +188,7 @@ var Callbacks = {};
 	function OnAbilityChestUsed(event) {
 
 		ShowSwapAbilityOverlay('replace', event.abilityCount, true, false);
+		SetVisibleAbilities(NormalizeLuaArray(event.visibleAbilities));
 		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
 		timeRemaining = event.timeToSelect;
 
@@ -203,6 +205,7 @@ var Callbacks = {};
 	function OnRandomizeAbilityResponse(event) {
 	    $.Msg('OnRandomizeAbilityResponse');
 		ShowSwapAbilityOverlay('randomize', event.abilityCount, false, false);
+		SetVisibleAbilities(NormalizeLuaArray(event.visibleAbilities));
 		SetSelectableAbilities(NormalizeLuaArray(event.allowedAbilities));
 
 		selectAbilityCallback = function(index, $button) {
@@ -224,6 +227,14 @@ var Callbacks = {};
             "#select_ability_remaining_time", $abilitySwapMessageBoxPanel);
 	}
 
+	function SetVisibleAbilities(abilities) {
+		ForEachAbilityButton(function($button, index) {
+			var $buttonContainer = GetAbilityButtonContainer(index);
+			var visible = abilities.indexOf(index) != -1;
+			$buttonContainer.SetHasClass('Visible', visible);
+		});
+	}
+
 	function SetSelectableAbilities(abilities) {
 		ForEachAbilityButton(function($button, index) {
 			var allowed = abilities.indexOf(index) != -1;
@@ -238,7 +249,11 @@ var Callbacks = {};
 	}
 
 	function GetAbilityButton(index) {
-		return $abilityListPanel.GetChild(index).GetChild(0).GetChild(0);
+		return GetAbilityButtonContainer(index).GetChild(0).GetChild(0);
+	}
+
+	function GetAbilityButtonContainer(index) {
+		return $abilityListPanel.GetChild(index);
 	}
 
 	function ShowSwapAbilityOverlay(swapMode, abilityCount, showTimer, withTransition) {
